@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String              @id @unique @default(cuid())
+  username          String              @unique
+  email             String              @unique
+  password          String
+  courseStoreExists Boolean             @default(false)
+  courseStore       TeacherCourseStore?
+  purschasedCourses Course[]            @relation("UserCourses") //contains the list of courses purchased by the user if no course purchased then will be empty
+}
+
+//course store table(the user who has a course store)
+model TeacherCourseStore {
+  id             String   @id @default(cuid())
+  storetitle     String
+  storedetails   String
+  teacherName    String
+  teacherDetails String
+  storeId        String   @unique //will reference(id that is default and autoincerement) //unique the foreight is unique is obvious //it is userid
+  user           User     @relation(fields: [storeId], references: [id])
+  courses        Course[]
+}
+
+//course table
+model Course {
+  id           String             @id @default(cuid())
+  ownerId      String
+  owner        TeacherCourseStore @relation(fields: [ownerId], references: [storeId]) //corrected should reference storeid(which is teacher id which is user id also)
+  title        String
+  description  String
+  price        Int //no floats
+  teachersName String
+  Thumbnail    String?
+  user         User[]             @relation("UserCourses") //relation not required on the many to may realation // @relation(fields: [userId], references: [id]) //can be related to multiple users (i.e. multiple people can purchase)
+}
+
+//what about the course contents
+//teach the  model to check if you got it
+//we are using join table herech //implicityly managed by prisma
