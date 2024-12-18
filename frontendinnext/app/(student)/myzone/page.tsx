@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import CourseCard from "@/app/components/courseCard/CourseCard";
+import CourseCard from "@/app/components/CourseCard";
 //show all the courses purchased by the user
 function page() {
   const [courses, setCourses] = useState([]);

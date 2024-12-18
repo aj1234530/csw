@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import CourseCard from "../components/courseCard/courseCard";
+import CourseCard from "../components/CourseCard";
 import axios from "axios";
 function page() {
   const [courses, setCourses] = useState([]);
