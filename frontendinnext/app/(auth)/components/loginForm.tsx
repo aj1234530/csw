@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-function loginForm() {
+function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [response, setRespose] = useState<null | string>(null);
@@ -57,6 +57,6 @@ function loginForm() {
   );
 }
 
-export default loginForm;
+export default LoginForm;
 
 //not using Form of next
