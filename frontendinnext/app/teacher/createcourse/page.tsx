@@ -1,7 +1,7 @@
 "use client";
 import React, { use, useState } from "react";
 import axios from "axios";
-function page() {
+function Page() {
   const [courseTitle, setcourseTitle] = useState("");
   const [courseDescription, setStoreDetails] = useState("");
   const [teacherName, setTeacherName] = useState("");
@@ -69,4 +69,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

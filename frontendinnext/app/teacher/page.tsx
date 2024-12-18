@@ -1,8 +1,8 @@
 import React from "react";
 
-function page() {
+function Page() {
   return <div>teacher root page</div>;
 }
 
-export default page;
+export default Page;
 //will have link to the create store page

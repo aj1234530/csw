@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
 import axios from "axios";
-function page() {
+function Page() {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   //title ,description, price,  by(teachername)
@@ -25,7 +25,7 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
 
 //can we directly fetch the data from the server without making it client componet
 //do fetching makes the component client
