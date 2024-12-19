@@ -12,6 +12,14 @@ authRouter.post("/signup", async (req, res) => {
   try {
     console.log(req.body);
     const { username, email, password } = signupSchema.parse(req.body);
+    if (!username || !email || !password) {
+      res.status(409).json({ message: "all field manadatory" });
+      return;
+    }
+    // if (!(await prisma.user.findUnique({ where: { email } }))) {
+    //   res.status(409).json({ message: "please login" });
+    //   return;
+    // }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: { username: username, email: email, password: hashedPassword },
@@ -32,9 +40,11 @@ authRouter.post("/signup", async (req, res) => {
 
 authRouter.post("/signin", async (req: Request, res: Response) => {
   try {
-    const { email, password } = signupSchema.parse(req.body);
+    const { email, password } = req.body;
+    console.log(email, password);
     const user = await prisma.user.findFirst({ where: { email } });
-    if (email !== user?.email) {
+    console.log(user);
+    if (!user) {
       res
         .status(409)
         .json({ message: "you are not signed up , please sign up" });
@@ -48,9 +58,7 @@ authRouter.post("/signin", async (req: Request, res: Response) => {
       throw new Error(`internal server error`);
     }
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "48h" });
-    res
-      .status(200)
-      .json({ message: "your are now signued up with us", token: token });
+    res.status(200).json({ message: "Login successful", token: token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "internal server error" });

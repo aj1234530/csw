@@ -99,7 +99,7 @@ studentRouter.get(
       if (!user) {
         throw new Error("internal error");
       }
-      res.status(200).json({ message: user.purschasedCourses }); //responding with all the purchased courses
+      res.status(200).json({ courses: user.purschasedCourses }); //responding with all the purchased courses
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }

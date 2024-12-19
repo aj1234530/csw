@@ -2,11 +2,8 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-import { signupSchema } from "./types/zodValidation";
-
-import { authSessionMiddleware } from "./middlewares/authsession";
+import cors from "cors";
 dotenv.config();
-import { bankServer } from "./webhook/bankSimulation";
 import { teacherRouter } from "./routes/teacherRoutes";
 import { studentRouter } from "./routes/studentRoutes";
 import { authRouter } from "./routes/authRoutes";
@@ -16,6 +13,7 @@ console.log(PORT);
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
@@ -23,7 +21,11 @@ app.get("/ping", (req, res) => {
 app.use("/api/v1/teacher", teacherRouter);
 app.use("/api/v1/student", studentRouter);
 app.use("/api/v1/auth", authRouter);
+app.use((req, res, next) => {
+  res.status(404).json({ error: "page not found" });
+});
 //writing on boarding routes
 
 app.listen(PORT, () => console.log(`server is running on ${PORT}`));
+
 //many to one relationship is ... retry to add the couse getting purchaed to that fiedl

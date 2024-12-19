@@ -27,10 +27,13 @@ teacherRouter.post(
           storeId: id, //will referennce the user
         },
       });
-      res.status(200).json({ message: "your course store was created" }); //
+      res.status(200).json({
+        message:
+          "your course store was created, you can create courses got the store to create it",
+      }); //
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "error" });
+      res.status(500).json({ message: "internal sever error happend , retry" });
     }
   }
 );
@@ -43,13 +46,7 @@ teacherRouter.post(
     try {
       const id = req.userId;
       console.log(id);
-      const {
-        courseTitle,
-        courseDescription,
-        pricing,
-        teacherName,
-        ThumbnailUrl,
-      } = req.body; //add zod validation here
+      const { courseTitle, courseDescription, price, teacherName } = req.body; //add zod validation here
       const user = await prisma.user.findFirst({ where: { id } });
       console.log(user?.courseStoreExists);
       if (!user?.courseStoreExists) {
@@ -64,15 +61,16 @@ teacherRouter.post(
           ownerId: id,
           title: courseTitle,
           description: courseDescription,
-          price: pricing,
+          price: parseInt(price), //parsing to integer
           teachersName: teacherName,
-          Thumbnail: ThumbnailUrl,
         },
       }); //will create a course referencing the the ownerId that is a teacher
       res.status(200).json({ message: "your course is created" });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "internal server error" });
+      res
+        .status(500)
+        .json({ message: "internal server error,retry a bit later" });
     }
   }
 );

@@ -9,7 +9,8 @@ export const authSessionMiddleware = (
   try {
     const token = req.headers["authorization"]?.split(" ")[1]; //Was stuck here for 30 min cause of small a//if one of the properties in the chain is null or undefined if authobject dne then undefined else split
     if (!token) {
-      res.status(409).json({ message: "no token provide" });
+      res.status(409).json({ message: "unauthorized" });
+      console.log("sdflksdjflsf"); ///comment
       return;
     }
     if (!JWT_SECRET) {
@@ -22,6 +23,7 @@ export const authSessionMiddleware = (
     console.log(req.userId);
     next();
   } catch (error: any) {
+    //TODO - any type - fix it
     console.log(error);
     if (error.name === "TokenExpiredError") {
       res.status(401).json({ message: "Access token has expired." });
